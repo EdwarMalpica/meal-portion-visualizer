@@ -17,8 +17,8 @@ export function MealPortionVisualizer() {
   const categoryItems = foodItems.filter((item) => item.category === selectedCategory)
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div className="md:col-span-1">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      <div className="lg:col-span-1">
         <Tabs
           defaultValue={selectedCategory}
           onValueChange={(value) => {
@@ -30,18 +30,18 @@ export function MealPortionVisualizer() {
           }}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 h-auto mb-4">
+          <TabsList className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 h-auto mb-4">
             {Object.entries(categoryLabels).map(([category, label]) => (
               <TabsTrigger key={category} value={category} className="flex flex-col items-center py-2 px-1 gap-1">
-                <FoodCategoryIcon category={category as FoodCategory} />
-                <span className="text-xs">{label}</span>
+                <FoodCategoryIcon category={category as FoodCategory} size={20} />
+                <span className="text-xs sm:text-sm">{label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
 
           {Object.keys(categoryLabels).map((category) => (
             <TabsContent key={category} value={category} className="mt-0">
-              <div className="grid grid-cols-1 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2">
                 {categoryItems.map((item) => (
                   <Card
                     key={item.id}
@@ -50,9 +50,9 @@ export function MealPortionVisualizer() {
                     }`}
                     onClick={() => setSelectedFoodId(item.id)}
                   >
-                    <CardContent className="p-3">
-                      <div className="font-medium">{item.name}</div>
-                      <div className="text-sm text-muted-foreground">
+                    <CardContent className="p-2 sm:p-3">
+                      <div className="font-medium text-sm sm:text-base">{item.name}</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">
                         {item.servingSize} ≈ {item.householdObject}
                       </div>
                     </CardContent>
@@ -64,7 +64,7 @@ export function MealPortionVisualizer() {
         </Tabs>
       </div>
 
-      <div className="md:col-span-2">{selectedFood && <PortionCard food={selectedFood} />}</div>
+      <div className="lg:col-span-2">{selectedFood && <PortionCard food={selectedFood} />}</div>
     </div>
   )
 }

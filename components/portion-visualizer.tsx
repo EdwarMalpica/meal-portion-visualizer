@@ -3,7 +3,8 @@
 import { useState } from "react"
 import type { FoodItem } from "@/lib/portion-data"
 import { Button } from "@/components/ui/button"
-import { Utensils, Home, RotateCcw, RotateCw, Maximize, Minimize } from "lucide-react"
+import { Utensils, Home, RotateCcw, RotateCw } from "lucide-react"
+import "@/styles/flip-card.css"
 
 interface PortionVisualizerProps {
   food: FoodItem
@@ -12,7 +13,7 @@ interface PortionVisualizerProps {
 export function PortionVisualizer({ food }: PortionVisualizerProps) {
   const [showObject, setShowObject] = useState(true)
   const [rotation, setRotation] = useState(0)
-  const [scale, setScale] = useState(1)
+  const [isFlipping, setIsFlipping] = useState(false)
 
   // Map food items to visual representations
   const getFoodImage = (food: FoodItem) => {
@@ -26,76 +27,96 @@ export function PortionVisualizer({ food }: PortionVisualizerProps) {
       fats: "#FCD34D", // amber
     }
 
-    return `/placeholder.svg?height=150&width=150&text=${food.name}&bg=${colors[food.category].replace("#", "")}`
+    return `/placeholder.svg?height=200&width=200&text=${food.name}&bg=${colors[food.category].replace("#", "")}`
   }
 
   const getObjectImage = (food: FoodItem) => {
     // Use placeholder SVGs for household objects
-    return `/placeholder.svg?height=150&width=150&text=${food.householdObject}&bg=CCCCCC`
+    return `/placeholder.svg?height=200&width=200&text=${food.householdObject}&bg=CCCCCC`
   }
 
   const handleRotate = (direction: "left" | "right") => {
     setRotation((prev) => (direction === "left" ? prev - 90 : prev + 90))
   }
 
-  const handleScale = (direction: "up" | "down") => {
-    setScale((prev) => {
-      const newScale = direction === "up" ? prev + 0.1 : prev - 0.1
-      return Math.max(0.5, Math.min(1.5, newScale))
-    })
+  const handleToggleView = () => {
+    setIsFlipping(true)
+    setTimeout(() => {
+      setShowObject(!showObject)
+      setTimeout(() => {
+        setIsFlipping(false)
+      }, 150)
+    }, 150)
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-center gap-4 mb-2">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex justify-center gap-2 sm:gap-4 mb-2 sm:mb-4">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setShowObject(!showObject)}
-          className="flex items-center gap-1"
+          onClick={handleToggleView}
+          className="flex items-center gap-1 text-xs sm:text-sm"
+          disabled={isFlipping}
         >
           {showObject ? <Utensils size={16} /> : <Home size={16} />}
           <span>Show {showObject ? "Food" : "Object"}</span>
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleRotate("left")}>
+        <Button variant="outline" size="sm" onClick={() => handleRotate("left")} className="text-xs sm:text-sm">
           <RotateCcw size={16} />
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleRotate("right")}>
+        <Button variant="outline" size="sm" onClick={() => handleRotate("right")} className="text-xs sm:text-sm">
           <RotateCw size={16} />
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => handleScale("up")} disabled={scale >= 1.5}>
-          <Maximize size={16} />
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => handleScale("down")} disabled={scale <= 0.5}>
-          <Minimize size={16} />
         </Button>
       </div>
 
-      <div className="h-64 bg-muted/30 rounded-lg p-4 flex items-center justify-center overflow-hidden">
+      <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96 bg-muted/30 rounded-lg p-4 flex items-center justify-center overflow-hidden">
         <div
+          className="flip-card"
           style={{
-            transform: `rotate(${rotation}deg) scale(${scale})`,
             width: "150px",
             height: "150px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "all 300ms ease-in-out",
+            perspective: "1000px",
           }}
         >
-          <img
-            src={showObject ? getObjectImage(food) : getFoodImage(food)}
-            alt={showObject ? food.householdObject : food.name}
+          <div
+            className="flip-card-inner"
             style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              objectFit: "contain",
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              transition: "transform 0.3s",
+              transformStyle: "preserve-3d",
+              transform: `${isFlipping ? "rotateY(90deg)" : "rotateY(0deg)"} rotate(${rotation}deg)`,
             }}
-          />
+          >
+            <div
+              className="flip-card-front"
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backfaceVisibility: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={showObject ? getObjectImage(food) : getFoodImage(food)}
+                alt={showObject ? food.householdObject : food.name}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="text-center font-medium">
+      <div className="text-center font-medium text-sm sm:text-base lg:text-lg">
         {showObject ? food.householdObject : `${food.name} (${food.servingSize})`}
       </div>
     </div>
