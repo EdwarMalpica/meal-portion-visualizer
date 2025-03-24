@@ -50,27 +50,44 @@ export function PortionVisualizer({ food }: PortionVisualizerProps) {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="flex justify-center gap-2 sm:gap-4 mb-2 sm:mb-4">
+    <div className="space-y-4 sm:space-y-6 tablet:space-y-1 tablet:flex tablet:flex-col tablet:h-full">
+      <div className="flex justify-center gap-2 sm:gap-4 mb-2 sm:mb-4 tablet:mb-1">
         <Button
           variant="outline"
           size="sm"
           onClick={handleToggleView}
-          className="flex items-center gap-1 text-xs sm:text-sm"
+          className="flex items-center gap-1 text-xs sm:text-sm tablet:text-xs tablet:h-7 tablet:px-2"
           disabled={isFlipping}
         >
-          {showObject ? <Utensils size={16} /> : <Home size={16} />}
+          {showObject ? <Utensils size={16} className="tablet:hidden" /> : <Home size={16} className="tablet:hidden" />}
+          {showObject ? (
+            <Utensils size={14} className="hidden tablet:block" />
+          ) : (
+            <Home size={14} className="hidden tablet:block" />
+          )}
           <span>Show {showObject ? "Food" : "Object"}</span>
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleRotate("left")} className="text-xs sm:text-sm">
-          <RotateCcw size={16} />
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handleRotate("left")}
+          className="text-xs sm:text-sm tablet:text-xs tablet:h-7 tablet:w-7 tablet:p-0"
+        >
+          <RotateCcw size={16} className="tablet:hidden" />
+          <RotateCcw size={14} className="hidden tablet:block" />
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleRotate("right")} className="text-xs sm:text-sm">
-          <RotateCw size={16} />
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handleRotate("right")}
+          className="text-xs sm:text-sm tablet:text-xs tablet:h-7 tablet:w-7 tablet:p-0"
+        >
+          <RotateCw size={16} className="tablet:hidden" />
+          <RotateCw size={14} className="hidden tablet:block" />
         </Button>
       </div>
 
-      <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96 bg-muted/30 rounded-lg p-4 flex items-center justify-center overflow-hidden">
+      <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96 bg-muted/30 rounded-lg p-4 flex items-center justify-center overflow-hidden tablet:flex-1 tablet:p-2">
         <div
           className="flip-card"
           style={{
@@ -110,13 +127,14 @@ export function PortionVisualizer({ food }: PortionVisualizerProps) {
                   maxHeight: "100%",
                   objectFit: "contain",
                 }}
+                className="tablet:max-w-[120px] tablet:max-h-[120px]"
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="text-center font-medium text-sm sm:text-base lg:text-lg">
+      <div className="text-center font-medium text-sm sm:text-base lg:text-lg tablet:text-xs tablet:mt-1">
         {showObject ? food.householdObject : `${food.name} (${food.servingSize})`}
       </div>
     </div>
