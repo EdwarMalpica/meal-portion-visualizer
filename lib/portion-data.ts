@@ -136,7 +136,7 @@ export const foodItems: FoodItem[] = [
 
 export const categoryLabels: Record<FoodCategory, string> = {
   proteins: "Proteins",
-  grains: "Grains & Starches",
+  grains: "Grains",
   fruits: "Fruits",
   vegetables: "Vegetables",
   dairy: "Dairy",

@@ -4,7 +4,6 @@ import { useState } from "react"
 import type { FoodItem } from "@/lib/portion-data"
 import { Button } from "@/components/ui/button"
 import { Utensils, Home, RotateCcw, RotateCw } from "lucide-react"
-import "@/styles/flip-card.css"
 
 interface PortionVisualizerProps {
   food: FoodItem
@@ -15,23 +14,20 @@ export function PortionVisualizer({ food }: PortionVisualizerProps) {
   const [rotation, setRotation] = useState(0)
   const [isFlipping, setIsFlipping] = useState(false)
 
-  // Map food items to visual representations
   const getFoodImage = (food: FoodItem) => {
-    // Use placeholder SVGs with different colors based on category
     const colors: Record<string, string> = {
-      proteins: "#F87171", // red
-      grains: "#FBBF24", // yellow
-      fruits: "#34D399", // green
-      vegetables: "#60A5FA", // blue
-      dairy: "#A78BFA", // purple
-      fats: "#FCD34D", // amber
+      proteins: "#F87171", 
+      grains: "#FBBF24", 
+      fruits: "#34D399", 
+      vegetables: "#60A5FA",
+      dairy: "#A78BFA", 
+      fats: "#FCD34D", 
     }
 
     return `/placeholder.svg?height=200&width=200&text=${food.name}&bg=${colors[food.category].replace("#", "")}`
   }
 
   const getObjectImage = (food: FoodItem) => {
-    // Use placeholder SVGs for household objects
     return `/placeholder.svg?height=200&width=200&text=${food.householdObject}&bg=CCCCCC`
   }
 
@@ -50,8 +46,8 @@ export function PortionVisualizer({ food }: PortionVisualizerProps) {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 tablet:space-y-1 tablet:flex tablet:flex-col tablet:h-full">
-      <div className="flex justify-center gap-2 sm:gap-4 mb-2 sm:mb-4 tablet:mb-1">
+    <div className="space-y-3 sm:space-y-4 tablet:space-y-1 tablet:flex tablet:flex-col tablet:h-full">
+      <div className="flex justify-center gap-2 sm:gap-4 mb-1 sm:mb-2 tablet:mb-1">
         <Button
           variant="outline"
           size="sm"
@@ -87,12 +83,12 @@ export function PortionVisualizer({ food }: PortionVisualizerProps) {
         </Button>
       </div>
 
-      <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96 bg-muted/30 rounded-lg p-4 flex items-center justify-center overflow-hidden tablet:flex-1 tablet:p-2">
+      <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96 bg-muted/30 rounded-lg p-2 flex items-center justify-center overflow-hidden tablet:flex-1 tablet:p-1">
         <div
           className="flip-card"
           style={{
-            width: "150px",
-            height: "150px",
+            width: "180px",
+            height: "180px",
             perspective: "1000px",
           }}
         >
@@ -127,7 +123,7 @@ export function PortionVisualizer({ food }: PortionVisualizerProps) {
                   maxHeight: "100%",
                   objectFit: "contain",
                 }}
-                className="tablet:max-w-[120px] tablet:max-h-[120px]"
+                className="tablet:max-w-[140px] tablet:max-h-[140px]"
               />
             </div>
           </div>

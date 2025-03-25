@@ -35,11 +35,11 @@ export function MealPortionVisualizer() {
               <TabsTrigger
                 key={category}
                 value={category}
-                className="flex flex-col items-center py-2 px-1 gap-1 tablet:py-1"
+                className="flex flex-col items-center py-2 px-0.5 gap-1 tablet:py-1"
               >
                 <FoodCategoryIcon category={category as FoodCategory} size={20} className="tablet:hidden" />
                 <FoodCategoryIcon category={category as FoodCategory} size={16} className="hidden tablet:block" />
-                <span className="text-xs sm:text-sm tablet:text-xs">{label}</span>
+                <span className="text-xs sm:text-sm tablet:text-xs w-full truncate text-center">{label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
